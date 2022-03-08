@@ -31,12 +31,12 @@
           </a>
       </nav>
 
-      <div v-for="(translation, group) in filterdTranslations" v-if="currentGroup === group" :key="group + 'tab'" class="overflow-x-auto">
+      <div v-for="(translation, group) in filteredTranslations" v-if="currentGroup === group" :key="group + 'tab'" class="overflow-x-auto">
         <table class="table w-full">
           <thead>
           <tr>
-            <th class="text-left">Key</th>
-            <th class="text-left" v-for="lang in languages">Translation&nbsp;{{ lang }}</th>
+            <th class="text-left">Ключ</th>
+            <th class="text-left" v-for="lang in languages">Перевод для&nbsp;{{ lang }}</th>
           </tr>
           </thead>
           <tbody>
@@ -89,7 +89,7 @@ export default {
   },
   data: () => {
     return {
-      title: 'Nova Translation Editor',
+      title: 'Переводы',
       apiUrl: '/nova-vendor/nova-translation-editor/',
       translations: null,
       changedTranslations: [],
@@ -111,7 +111,7 @@ export default {
     showTable() {
       return this.translations && Object.keys(this.translations).length > 0;
     },
-    filterdTranslations() {
+    filteredTranslations() {
       let filtered = {};
 
       if(this.filterString) {
@@ -193,6 +193,7 @@ export default {
       }
 
       Nova.request().post(this.apiUrl + 'save', {data: data}).then(response => {
+        this.getData()
         this.$toasted.show('Saved', {type: 'success'});
       }).catch(error => {
         this.$toasted.show(error, {type: 'error'});
